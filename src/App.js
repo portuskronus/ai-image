@@ -3,7 +3,7 @@ import { NFTStorage, File } from 'nft.storage'
 import { Buffer } from 'buffer';
 import { ethers } from 'ethers';
 import axios from 'axios';
-
+ // require('dotenv').config();
 // Components
 import Spinner from 'react-bootstrap/Spinner';
 import Navigation from './components/Navigation';
@@ -18,6 +18,9 @@ function App() {
   const [provider, setProvider] = useState(null)
   const [account, setAccount] = useState(null)
   const [nft, setNFT] = useState(null)
+
+  const REACT_APP_HUGGING_FACE_API_KEY = "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"
+  const REACT_APP_NFT_STORAGE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDkwZEI1N2U5MDdhNTgwYzM0N2ZGMDVDQzVlNDEzM0Y1RWI1MTU5N2UiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3NTU4MTU0NzM4NCwibmFtZSI6IkFpSW1hZ2UifQ.oQzpZvKP_WiFPHFgpGEABaR9_gXFV8zByvMwXJJjQug"
 
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
@@ -71,7 +74,7 @@ function App() {
       url: URL,
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_HUGGING_FACE_API_KEY}`,
+        Authorization: `Bearer ${REACT_APP_HUGGING_FACE_API_KEY}`,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
@@ -95,7 +98,7 @@ function App() {
     setMessage("Uploading Image...")
 
     // Create instance to NFT.Storage
-    const nftstorage = new NFTStorage({ token: process.env.REACT_APP_NFT_STORAGE_API_KEY })
+    const nftstorage = new NFTStorage({ token: REACT_APP_NFT_STORAGE_API_KEY })
 
     // Send request to store image
     const { ipnft } = await nftstorage.store({
@@ -115,7 +118,7 @@ function App() {
     setMessage("Waiting for Mint...")
 
     const signer = await provider.getSigner()
-    const transaction = await nft.connect(signer).mint(tokenURI, { value: ethers.utils.parseUnits("1", "ether") })
+    const transaction = await nft.connect(signer).mint(tokenURI, { value: ethers.utils.parseUnits("0.1", "ether") })
     await transaction.wait()
   }
 
